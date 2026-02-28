@@ -14,8 +14,16 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@types/amqplib": "^0.10.8",
     "@types/express": "^5.0.6",
+    "@types/pg": "^8.16.0",
+    "amqplib": "^0.10.9",
+    "dotenv": "^17.3.1",
+    "eslint": "^10.0.2",
     "express": "^5.2.1",
-    "figlet": "^1.10.0"
+    "figlet": "^1.10.0",
+    "mongoose": "^9.2.3",
+    "pg": "^8.19.0",
+    "winston": "^3.19.0"
   }
 }
