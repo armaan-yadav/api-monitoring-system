@@ -20,7 +20,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  
+
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: api-monitoring-pgadmin
@@ -64,11 +64,37 @@ services:
       - api-monitoring-network
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD-SHELL", "rabbitmq-diagnostics", "-q", "ping" ]
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
       interval: 30s
-      timeout: 5s
+      timeout: 10s
       retries: 5
-
+      start_period: 30s
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api-monitoring-server
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    networks:
+      - api-monitoring-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongo:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - ./logs:/usr/src/app/logs
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 volumes:
   postgres_data:
@@ -82,3 +108,4 @@ volumes:
 
 networks:
   api-monitoring-network:
+    driver: bridge

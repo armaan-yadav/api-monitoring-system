@@ -17,3 +17,4 @@ This project was created using `bun init` in bun v1.3.9. [Bun](https://bun.com) 
 ## Data Models
 
 ![alt text](diagrams/models.png)
+![alt text](diagrams/endpoint_metrices.png)

@@ -74,7 +74,7 @@ class RabbitMQConnection {
         return 'disconnected';
     }
 
-    async close(): Promise<void> {
+    async disconnect(): Promise<void> {
         this.connectionPromise = null;
 
         try {

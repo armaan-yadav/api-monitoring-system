@@ -1,5 +1,5 @@
 class ResponseFormatter {
-    static success(data: any = null, message: string = 'Success', statusCode: number = 200) {
+    static success(statusCode: number = 200, message: string = 'Success', data: any = null) {
         return {
             success: true,
             message,
@@ -8,7 +8,7 @@ class ResponseFormatter {
             timeStamp: new Date().toISOString(),
         };
     }
-    static error(message: string = 'Error', statusCode: number = 500, error: any = null) {
+    static error(statusCode: number = 500, message: string = 'Error', error: any = null) {
         return {
             success: false,
             message,
@@ -19,8 +19,8 @@ class ResponseFormatter {
     }
 
     static validationError(
-        message: string = 'Validation Error',
         statusCode: number = 400,
+        message: string = 'Validation Error',
         error: any = null
     ) {
         return {
