@@ -2,12 +2,11 @@ import mongoose from 'mongoose';
 import config from './index';
 import logger from './logger';
 
-
 // singleton design(creational) pattern for  mongodb connection
 // only one single instanct of the  class for the whole application
-class MongoConnection{
+class MongoConnection {
     connection: mongoose.Connection | null;
-    constructor(){
+    constructor() {
         this.connection = null;
     }
 
@@ -15,7 +14,7 @@ class MongoConnection{
      * Connect to MongoDB
      * @returns Promise<mongoose.Connection>
      */
-    async connect(){
+    async connect() {
         try {
             if (this.connection) {
                 logger.info('MongoDB connection already exists');
@@ -25,10 +24,10 @@ class MongoConnection{
             await mongoose.connect(config.mongo.uri, { dbName: config.mongo.dbName });
             logger.info(`Connected to MongoDB at ${config.mongo.uri}`);
             this.connection = mongoose.connection;
-            this.connection.on("error", (err: Error) => {
+            this.connection.on('error', (err: Error) => {
                 logger.error('MongoDB connection error:', err);
             });
-            this.connection.on("disconnected", () => {
+            this.connection.on('disconnected', () => {
                 logger.error('MongoDB disconnected');
             });
 
@@ -41,7 +40,7 @@ class MongoConnection{
     /**
      * Disconnect from MongoDB
      */
-    async disconnect(){
+    async disconnect() {
         try {
             if (this.connection) {
                 await mongoose.disconnect();
@@ -50,7 +49,7 @@ class MongoConnection{
             }
         } catch (error) {
             logger.error('Failed to disconnect from MongoDB:', error);
-            throw error  ;
+            throw error;
         }
     }
 
@@ -58,11 +57,10 @@ class MongoConnection{
      * Get the current MongoDB connection
      * @returns {mongoose.Connection | null}
      */
-    getConnection(){
+    getConnection() {
         return this.connection;
     }
 }
 
-
-const  mongoConnection = new MongoConnection();
+const mongoConnection = new MongoConnection();
 export default mongoConnection;

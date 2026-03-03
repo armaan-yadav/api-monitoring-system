@@ -2,16 +2,16 @@ import pg from 'pg';
 import config from './index';
 import logger from './logger';
 
-const { Pool } = pg
+const { Pool } = pg;
 
-class PostgresConnection{
-    pool : pg.Pool | null = null;
-    constructor(){
+class PostgresConnection {
+    pool: pg.Pool | null = null;
+    constructor() {
         this.pool = null;
     }
 
-    getPool(): pg.Pool | null{
-        if(!this.pool){
+    getPool(): pg.Pool | null {
+        if (!this.pool) {
             this.pool = new Pool({
                 host: config.postgres.host,
                 port: config.postgres.port,
@@ -20,26 +20,28 @@ class PostgresConnection{
                 database: config.postgres.database,
                 max: 20,
                 idleTimeoutMillis: 30000,
-                connectionTimeoutMillis: 2000
+                connectionTimeoutMillis: 2000,
             });
 
             this.pool.on('error', (err: Error) => {
                 logger.error('Unexpected error on idle client', err);
                 process.exit(-1);
             });
-            logger.info(`PostgreSQL pool created for ${config.postgres.host}:${config.postgres.port}/${config.postgres.database}`);
+            logger.info(
+                `PostgreSQL pool created for ${config.postgres.host}:${config.postgres.port}/${config.postgres.database}`
+            );
         }
         return this.pool;
     }
 
-    async testConnection(){
+    async testConnection() {
         try {
             const pool = this.getPool();
-            if(!pool){
+            if (!pool) {
                 throw new Error('PostgreSQL pool not initialized');
             }
-            const client =  await pool.connect();
-            const result  = await client.query('SELECT NOW()');
+            const client = await pool.connect();
+            const result = await client.query('SELECT NOW()');
             logger.info('PostgreSQL connection test successful:', result.rows[0]);
             client.release();
         } catch (error) {
@@ -47,9 +49,9 @@ class PostgresConnection{
         }
     }
 
-    async query(text: string, params?: any[]){ 
-        const  pool = this.getPool();
-        const start = Date.now(); 
+    async query(text: string, params?: any[]) {
+        const pool = this.getPool();
+        const start = Date.now();
         try {
             const res = await pool?.query(text, params);
             const duration = Date.now() - start;
@@ -61,8 +63,8 @@ class PostgresConnection{
         }
     }
 
-    async disconnect(){
-        if(this.pool){
+    async disconnect() {
+        if (this.pool) {
             await this.pool.end();
             this.pool = null;
             logger.info('PostgreSQL pool has been closed');
