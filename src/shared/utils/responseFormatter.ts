@@ -2,18 +2,18 @@ class ResponseFormatter {
     static success(statusCode: number = 200, message: string = 'Success', data: any = null) {
         return {
             success: true,
+            statusCode,
             message,
             data,
-            statusCode,
             timeStamp: new Date().toISOString(),
         };
     }
     static error(statusCode: number = 500, message: string = 'Error', error: any = null) {
         return {
             success: false,
+            statusCode,
             message,
             error,
-            statusCode,
             timeStamp: new Date().toISOString(),
         };
     }
@@ -25,9 +25,9 @@ class ResponseFormatter {
     ) {
         return {
             success: false,
+            statusCode,
             message,
             error,
-            statusCode,
             timeStamp: new Date().toISOString(),
         };
     }

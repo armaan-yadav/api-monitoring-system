@@ -2,6 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import figlet from 'figlet';
 import helmet from 'helmet';
+import authRouter from './services/auth/routes/authRouter';
 import logger from './shared/config/logger';
 import mongoConnection from './shared/config/mongodb';
 import postgresConnection from './shared/config/postgres';
@@ -38,8 +39,10 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Hello!');
 });
+
+app.use('/api/v1/auth', authRouter);
 
 // 404 handler
 app.use((req, res) => {
@@ -54,11 +57,17 @@ async function initializeConnection() {
         logger.info('Initializing connectins...');
 
         //connect to mongodb
+        logger.info('Connecting to MongoDB...');
         await mongoConnection.connect();
+        logger.info('MongoDB connection established successfully!');
         // connect  to postgres db
+        logger.info('Connecting to PostgreSQL...');
         await postgresConnection.testConnection();
+        logger.info('PostgreSQL connection established successfully!');
         // connect to rabbbitmq
+        logger.info('Connecting to RabbitMQ...');
         await rabbitMQConnection.connect();
+        logger.info('RabbitMQ connection established successfully!');
         logger.info('All connections initialized successfully!');
     } catch (error) {
         logger.error('Error while initializing connection: ', error);

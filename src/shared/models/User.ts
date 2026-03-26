@@ -4,7 +4,8 @@ import mongoose from 'mongoose';
 import SecurityUtils from '../utils/securityUtils';
 import { emailValidator } from '../utils/validatorsUtils';
 
-interface IUser {
+export interface IUser {
+    _id: mongoose.Types.ObjectId;
     username: string;
     email: string;
     password: string;
