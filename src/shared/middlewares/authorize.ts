@@ -15,7 +15,7 @@ const authorize =
 
             //check role
             if (!allowedRoles.includes(req.user.role as RoleType)) {
-                return res.status(403).json(ResponseFormatter.error(403, 'Permission Denied'));
+                return res.status(403).json(ResponseFormatter.error(403, 'Karu Guddi laal (｡•̀ ᴖ •́ ｡)'));
             }
 
             next();

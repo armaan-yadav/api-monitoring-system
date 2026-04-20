@@ -1,9 +1,9 @@
-import jwt from 'jsonwebtoken';
+import jwt, { type SignOptions } from 'jsonwebtoken';
 import config from '../../../shared/config';
 import logger from '../../../shared/config/logger';
 import { ROLES } from '../../../shared/constants/roles';
-import type { IUser } from '../../../shared/models/User';
 import AppError from '../../../shared/utils/appError';
+import type { IUser } from '../../../shared/models/User';
 import type { BaseRepository } from '../repositories';
 import type { OnboardSuperAdminInput } from '../validations/authValidation';
 
@@ -43,7 +43,7 @@ class AuthService implements IAuthService {
         };
 
         return jwt.sign(payload, config.jwt.secret, {
-            expiresIn: parseInt(config.jwt.expiresIn, 10),
+            expiresIn:config.jwt.expiresIn as SignOptions["expiresIn"],
         });
     }
 

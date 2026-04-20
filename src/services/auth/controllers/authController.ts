@@ -3,7 +3,7 @@ import config from '../../../shared/config';
 import ResponseFormatter from '../../../shared/utils/responseFormatter';
 import { type IAuthService } from '../services/authService';
 
-export class AuthController {
+class AuthController {
     private authService: IAuthService;
     constructor(authService: IAuthService) {
         if (!authService) {
@@ -14,7 +14,12 @@ export class AuthController {
 
     async onboardSuperAdmin(req: Request, res: Response, next: NextFunction) {
         try {
-            const { token, user } = await this.authService.onboardSuperAdmin(req.body);
+            const { username, email, password } = req.body;
+            const { token, user } = await this.authService.onboardSuperAdmin({
+                email,
+                password,
+                username,
+            });
 
             res.cookie('authToken', token, {
                 httpOnly: config.cookie.httpOnly,
@@ -32,3 +37,5 @@ export class AuthController {
         }
     }
 }
+
+export default AuthController;

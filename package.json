@@ -19,9 +19,11 @@
         "typescript": "^5"
     },
     "dependencies": {
+        "@types/cookie-parser": "^1.4.10",
         "@types/jsonwebtoken": "^9.0.10",
         "amqplib": "^0.10.9",
         "bcryptjs": "^3.0.3",
+        "cookie-parser": "^1.4.7",
         "cors": "^2.8.6",
         "dotenv": "^17.3.1",
         "eslint": "^10.0.2",

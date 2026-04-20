@@ -9,7 +9,16 @@ class MongoUserRepository extends BaseRepository<IUser> {
 
     override async create(data: Partial<IUser>): Promise<IUser> {
         try {
-            const user = await new this.model(data).save();
+            let userData = { ...data };
+            if (userData.role === 'super_admin' && !userData.permissions) {
+                userData.permissions = {
+                    canCreateApiKeys: true,
+                    canExportData: true,
+                    canManageUsers: true,
+                    canViewAnalytics: true,
+                };
+            }
+            const user = await new this.model(userData).save();
             logger.info(`User created: ${user._id} (${user.username})`);
             return user;
         } catch (error) {
@@ -35,7 +44,7 @@ class MongoUserRepository extends BaseRepository<IUser> {
         }
     }
 
-    override findbyEmail(email: string): Promise<IUser | null> {
+    override findByEmail(email: string): Promise<IUser | null> {
         try {
             return this.model.findOne({ email }).exec();
         } catch (error) {

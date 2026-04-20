@@ -7,7 +7,7 @@ const config = {
     node_env: process.env.NODE_ENV || 'development',
     // by default, values imported from .env file are strings, so we need to parse it to number
     // in express, it automatically converts the port to number
-    port: parseInt(process.env.PORT || '5000', 10),
+    port: parseInt(process.env.PORT || '3000', 10),
 
     // Mongodb config
     mongo: {

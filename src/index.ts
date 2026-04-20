@@ -9,6 +9,7 @@ import postgresConnection from './shared/config/postgres';
 import rabbitMQConnection from './shared/config/rabbitmq';
 import errorHandler from './shared/middlewares/errorHandler';
 import ResponseFormatter from './shared/utils/responseFormatter';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,7 +17,11 @@ const port = process.env.PORT || 3000;
 // middlewares
 app.use(express.json());
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+    origin : true,
+    credentials : true,
+}));
+app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
 
 // logging
@@ -103,7 +108,7 @@ async function initializeConnection() {
             setTimeout(() => {
                 logger.warn('Forcing shutdown after 10 seconds');
                 process.exit(1);
-            }, 1000);
+            }, 10000);
         };
 
         process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));

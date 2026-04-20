@@ -22,6 +22,7 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
         const decoded = jwt.verify(token, config.jwt.secret) as IToken;
 
         req.user = { ...decoded };
+        next();
     } catch (error) {
         logger.error('Authentication error', { error: error, path: req.path });
 

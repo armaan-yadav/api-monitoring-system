@@ -1,7 +1,7 @@
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
-import type { ZodTypeAny } from 'zod';
+import type { ZodTypeAny,z } from 'zod';
 
-const validateBody = <TSchema extends ZodTypeAny>(schema: TSchema): RequestHandler => {
+const validateBody = <TSchema extends ZodTypeAny>(schema: TSchema): RequestHandler<{},{},z.infer<TSchema>> => {
     return (req: Request, _res: Response, next: NextFunction) => {
         const result = schema.safeParse(req.body);
 

@@ -1,21 +1,19 @@
-import { AuthController } from '../controllers/authController';
+import AuthController from '../controllers/authController';
 import MongoUserRepository from '../repositories/userRepository';
 import AuthService from '../services/authService';
 
 class Container {
     static init() {
-        const repositories = { userRepository: new MongoUserRepository() };
+        const repository = new MongoUserRepository();
 
-        const services = { authService: new AuthService(repositories.userRepository) };
+        const service = new AuthService(repository);
 
-        const controllers = {
-            authController: new AuthController(services.authService),
-        };
+        const controller = new AuthController(service);
 
         return {
-            repositories,
-            services,
-            controllers,
+            authRepository :repository,
+            authService: service,
+            authController: controller,
         };
     }
 }
